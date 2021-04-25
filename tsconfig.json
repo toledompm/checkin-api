@@ -11,5 +11,10 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "rootDir": "./src",
+    "paths": {
+      "src/*": ["src/*"],
+      "tests/*": ["tests/*"]
+    }
   }
 }
