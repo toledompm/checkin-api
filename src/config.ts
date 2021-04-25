@@ -1,4 +1,4 @@
-export interface GoogleConfigInterface {
+interface GoogleConfigInterface {
   readonly clientID: string;
 
   readonly clientSecret: string;
@@ -10,7 +10,7 @@ export interface GoogleConfigInterface {
   readonly callbackURL: string;
 
   /**
-   * scope refers to the set of user information that we require from google needed in our app.
+   * scope refers to the set of user information that we require from google, needed in our app.
    */
   readonly scope: string[];
 }
@@ -24,7 +24,7 @@ export const configValues: ConfigInterface = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_SECRET,
     callbackURL:
-      process.env.CALLBACK_URL || 'http://localhost:3000/google/redirect',
+      process.env.CALLBACK_URL || 'http://localhost:3000/auth/google/redirect',
     scope: ['email', 'profile'],
   },
 };
