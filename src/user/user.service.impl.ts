@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { UserDto } from 'src/user/domain/user.dto';
 import { User } from 'src/user/domain/user.entity';
+import { UserResponseDto } from 'src/user/domain/userResponse.dto';
 import { UserService } from 'src/user/user.service';
-
-export type UserDto = {
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-};
 
 @Injectable()
 export class UserServiceImpl implements UserService {
@@ -27,7 +23,11 @@ export class UserServiceImpl implements UserService {
     this.idSequence = this.idSequence + 1;
   }
 
-  public async getUser(id: number): Promise<User> {
+  public async getUser(id: number): Promise<UserResponseDto> {
     return this.users.find((user) => user.id === id);
+  }
+
+  public async findUserByEmail(email: string): Promise<UserResponseDto> {
+    return this.users.find((user) => user.email === email);
   }
 }

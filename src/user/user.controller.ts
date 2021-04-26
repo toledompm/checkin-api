@@ -1,4 +1,6 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { JWT_AUTH_STRATEGY } from 'src/auth/constants';
 import { USER_SERVICE } from 'src/user/constants';
 import { UserService } from 'src/user/user.service';
 
@@ -9,6 +11,7 @@ export class UserController {
   ) {}
 
   @Get()
+  @UseGuards(AuthGuard(JWT_AUTH_STRATEGY))
   getHello(): string {
     return this.userService.getHello();
   }

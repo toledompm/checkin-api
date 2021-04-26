@@ -1,6 +1,8 @@
-interface GoogleConfigInterface {
-  readonly clientID: string;
+import { JwtSignOptions } from '@nestjs/jwt';
+import { ExtractJwt, JwtFromRequestFunction } from 'passport-jwt';
 
+interface GoogleConfig {
+  readonly clientID: string;
   readonly clientSecret: string;
 
   /**
@@ -15,16 +17,37 @@ interface GoogleConfigInterface {
   readonly scope: string[];
 }
 
-export interface ConfigInterface {
-  readonly google: GoogleConfigInterface;
+interface JwtConfig {
+  readonly secret: string;
+  readonly ignoreExpiration: boolean;
+  readonly jwtFromRequest: JwtFromRequestFunction;
+  readonly signOptions?: JwtSignOptions;
 }
 
-export const configValues: ConfigInterface = {
-  google: {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_SECRET,
-    callbackURL:
-      process.env.CALLBACK_URL || 'http://localhost:3000/auth/google/redirect',
-    scope: ['email', 'profile'],
+interface AuthConfigs {
+  readonly google: GoogleConfig;
+  readonly jwt: JwtConfig;
+}
+
+export interface Config {
+  readonly auth: AuthConfigs;
+}
+
+export const configValues: Config = {
+  auth: {
+    google: {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+      callbackURL:
+        process.env.CALLBACK_URL ||
+        'http://localhost:3000/auth/google/redirect',
+      scope: ['email', 'profile'],
+    },
+    jwt: {
+      secret: process.env.JWT_SECRET,
+      ignoreExpiration: false,
+      signOptions: { expiresIn: '60s' },
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    },
   },
 };
