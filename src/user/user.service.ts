@@ -1,9 +1,10 @@
-import { UserResponseDto } from 'src/user/domain/userResponse.dto';
 import { UserDto } from 'src/user/domain/user.dto';
+import { UserFilter } from 'src/user/domain/user.filter';
+import { User } from 'src/user/domain/user.entity';
 
 export interface UserService {
   getHello(): string;
-  saveUser(userDto: UserDto): Promise<void>;
-  getUser(id: number): Promise<UserResponseDto>;
-  findUserByEmail(email: string): Promise<UserResponseDto>;
+  saveUser(userDto: UserDto): Promise<User>;
+  getUser(id: number): Promise<User>;
+  findUser(filter: UserFilter): Promise<User | undefined>;
 }

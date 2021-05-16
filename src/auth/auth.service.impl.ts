@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from 'src/auth/auth.service';
-import { USER_SERVICE } from 'src/user/constants';
+import { AuthService, TokenAtributes } from 'src/auth/auth.service';
+import { USER_SERVICE } from 'src/user/userConstants';
 import { UserDto } from 'src/user/domain/user.dto';
-import { UserResponseDto } from 'src/user/domain/userResponse.dto';
 import { UserService } from 'src/user/user.service';
+import { Token } from 'src/auth/domain/token.entity';
+import { UserFilter } from 'src/user/domain/user.filter';
+import { User } from 'src/user/domain/user.entity';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {
@@ -13,25 +15,38 @@ export class AuthServiceImpl implements AuthService {
     @Inject(USER_SERVICE) private userService: UserService,
   ) {}
 
-  async googleLogin(userDto: UserDto): Promise<Record<string, any>> {
-    if (!userDto) {
-      return { err: 'No user from google' };
-    }
+  async googleLogin(userDto: UserDto): Promise<Token> {
+    if (!userDto) throw new Error('No user from google');
+    const user = await this.getUser(userDto);
+    const token = this.signToken(user);
+    return token;
+  }
 
-    const { email } = userDto;
-    const user = await this.getUser(email);
+  async getUserFromTokenAttributes({
+    sub,
+  }: TokenAtributes): Promise<User | undefined> {
+    return this.getUser({ id: sub });
+  }
 
-    const accessToken = this.jwtService.sign({
-      sub: user.id,
-      email: user.email,
-    });
-
+  private async signToken(user: User): Promise<Token> {
+    const tokenAtributes = this.extractTokenAtributes(user);
+    const accessToken = this.jwtService.sign(tokenAtributes);
     return {
-      access_token: accessToken,
+      accessToken: accessToken,
     };
   }
 
-  private async getUser(userDto): Promise<UserResponseDto> {
-    return this.userService.findUserByEmail(userDto.email);
+  private getUser(userAttrs: Partial<User>): Promise<User> {
+    const filter = new UserFilter(userAttrs);
+    const user = this.userService.findUser(filter);
+    if (!user) throw new Error('User not found');
+    return user;
+  }
+
+  private extractTokenAtributes(user: User): TokenAtributes {
+    return {
+      sub: user.id,
+      email: user.email,
+    };
   }
 }

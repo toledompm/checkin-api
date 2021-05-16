@@ -2,7 +2,7 @@ import { Controller, Get, Inject, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { AuthService } from 'src/auth/auth.service';
-import { AUTH_SERVICE, GOOGLE_AUTH_STRATEGY } from 'src/auth/constants';
+import { AUTH_SERVICE, GOOGLE_AUTH_STRATEGY } from 'src/auth/authConstants';
 
 @Controller('auth')
 export class AuthController {

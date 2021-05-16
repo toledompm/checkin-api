@@ -6,10 +6,11 @@ import {
   AUTH_SERVICE,
   GOOGLE_AUTH_STRATEGY,
   JWT_AUTH_STRATEGY,
-} from 'src/auth/constants';
+} from 'src/auth/authConstants';
 import { GoogleStrategy } from 'src/auth/strategies/google.strategy';
 import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 import { Environment } from 'src/common/environtment';
+import { UserModule } from 'src/user/user.module';
 
 const jwtConfig = Environment.config.auth.jwt;
 
@@ -37,7 +38,7 @@ const jwtModule = JwtModule.register({
 });
 
 @Module({
-  imports: [jwtModule],
+  imports: [jwtModule, UserModule],
   providers: [...authProviders, ...serviceProviders],
   controllers: [AuthController],
 })
