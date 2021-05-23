@@ -13,12 +13,12 @@ export class GoogleStrategy extends PassportStrategy(
     super(Environment.config.auth.google);
   }
 
-  async validate(
+  validate(
     _accessToken: string,
     _refreshToken: string,
     profile: any,
     done: VerifyCallback,
-  ): Promise<any> {
+  ): void {
     const { name, emails } = profile;
 
     const userDto = {

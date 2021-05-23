@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService, TokenAtributes } from 'src/auth/auth.service';
-import { USER_SERVICE } from 'src/user/userConstants';
-import { UserDto } from 'src/user/domain/user.dto';
-import { UserService } from 'src/user/user.service';
 import { Token } from 'src/auth/domain/token.entity';
-import { UserFilter } from 'src/user/domain/user.filter';
+import { UserDto } from 'src/user/domain/user.dto';
 import { User } from 'src/user/domain/user.entity';
+import { UserFilter } from 'src/user/domain/user.filter';
+import { UserService } from 'src/user/user.service';
+import { USER_SERVICE } from 'src/user/userConstants';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {

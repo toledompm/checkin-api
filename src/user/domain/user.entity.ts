@@ -1,16 +1,17 @@
 import { ok } from 'assert';
 
+const defaults = {
+  firstName: 'anon',
+};
+
 export class User {
   readonly id: number;
   readonly email: string;
   readonly firstName: string;
   readonly lastName: string;
 
-  constructor({ id, email, firstName, lastName }: Partial<User>) {
-    ok(id);
-    this.id = id;
-    this.email = email || '';
-    this.firstName = firstName || 'anon';
-    this.lastName = lastName || '';
+  constructor(partial: Partial<User>) {
+    ok(partial?.id);
+    Object.assign(this, defaults, partial);
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Token } from 'src/auth/domain/token.entity';
 import { UserDto } from 'src/user/domain/user.dto';
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
@@ -12,10 +13,6 @@ export class UserServiceImpl implements UserService {
   constructor() {
     this.users = [];
     this.idSequence = 1;
-  }
-
-  public getHello(): string {
-    return 'Hello User!';
   }
 
   public async saveUser(userDto: UserDto): Promise<User> {
@@ -36,5 +33,11 @@ export class UserServiceImpl implements UserService {
       });
       return flag;
     });
+  }
+
+  public async generateCheckinToken(user: User): Promise<Token> {
+    return {
+      accessToken: `id: ${user.id}`,
+    };
   }
 }
