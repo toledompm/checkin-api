@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Token } from 'src/auth/domain/token.entity';
-import { UserDto } from 'src/user/domain/user.dto';
+import { UserDto } from 'src/user/domain/dtos/user.dto';
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
 import { UserService } from 'src/user/user.service';

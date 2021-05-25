@@ -1,4 +1,4 @@
-import { UserDto } from 'src/user/domain/user.dto';
+import { UserDto } from 'src/user/domain/dtos/user.dto';
 import { UserFilter } from 'src/user/domain/user.filter';
 import { User } from 'src/user/domain/user.entity';
 import { Token } from 'src/auth/domain/token.entity';

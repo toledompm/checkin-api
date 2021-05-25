@@ -1,7 +1,7 @@
 import { Body, Inject, Post } from '@nestjs/common';
 import { CHECKIN_SERVICE } from 'src/checkin/checkinConstants';
 import { CheckinService } from 'src/checkin/checkin.service';
-import { UserCheckinDto } from 'src/checkin/domain/userCheckin.dto';
+import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 
 export class CheckinController {
   constructor(

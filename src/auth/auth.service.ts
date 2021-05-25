@@ -1,4 +1,4 @@
-import { UserDto } from 'src/user/domain/user.dto';
+import { UserDto } from 'src/user/domain/dtos/user.dto';
 import { User } from 'src/user/domain/user.entity';
 
 export type TokenAtributes = {

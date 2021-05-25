@@ -1,4 +1,4 @@
-import { UserCheckinDto } from 'src/checkin/domain/userCheckin.dto';
+import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 
 export interface CheckinService {
   checkinUser(checkinDto: UserCheckinDto): void;
