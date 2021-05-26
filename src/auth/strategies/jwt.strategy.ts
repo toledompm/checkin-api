@@ -4,6 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Environment } from 'src/common/environtment';
 import { AUTH_SERVICE, JWT_AUTH_STRATEGY } from 'src/auth/authConstants';
 import { AuthService } from 'src/auth/auth.service';
+import { UserAuthTokenAtributes } from 'src/user/domain/tokens/userAuthToken';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, JWT_AUTH_STRATEGY) {
@@ -24,10 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, JWT_AUTH_STRATEGY) {
     });
   }
 
-  async validate(payload: any) {
-    return this.authService.getUserFromTokenAttributes({
-      sub: payload.sub,
-      email: payload.email,
-    });
+  async validate(payload: UserAuthTokenAtributes) {
+    return this.authService.getUserFromTokenAttributes(payload);
   }
 }

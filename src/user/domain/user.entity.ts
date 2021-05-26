@@ -1,17 +1,21 @@
-import { ok } from 'assert';
+export enum UserRole {
+  ADMIN = 'admin',
+  MEMBER = 'member',
+}
 
 const defaults = {
-  firstName: 'anon',
+  role: UserRole.MEMBER,
 };
 
 export class User {
   readonly id: number;
+  readonly uuid: string;
   readonly email: string;
   readonly firstName: string;
   readonly lastName: string;
+  readonly role: UserRole;
 
   constructor(partial: Partial<User>) {
-    ok(partial?.id);
     Object.assign(this, defaults, partial);
   }
 }

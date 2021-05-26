@@ -1,4 +1,4 @@
-import { UserCheckinToken } from 'src/user/domain/userCheckinToken';
+import { UserCheckinToken } from 'src/user/domain/tokens/userCheckinToken';
 
 export class UserCheckinDto {
   public userToken: UserCheckinToken;
