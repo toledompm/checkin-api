@@ -1,3 +1,5 @@
+import { UserCheckinToken } from 'src/user/domain/tokens/userCheckinToken';
+
 export enum UserRole {
   ADMIN = 'admin',
   MEMBER = 'member',
@@ -14,6 +16,8 @@ export class User {
   readonly firstName: string;
   readonly lastName: string;
   readonly role: UserRole;
+
+  token: UserCheckinToken;
 
   constructor(partial: Partial<User>) {
     Object.assign(this, defaults, partial);

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Token } from 'src/auth/domain/token.entity';
 import { UserDto } from 'src/user/domain/dtos/user.dto';
+import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
+import { UserCheckinToken } from 'src/user/domain/tokens/userCheckinToken';
+import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
 import { UserService } from 'src/user/user.service';
@@ -16,7 +18,11 @@ export class UserServiceImpl implements UserService {
   }
 
   public async saveUser(userDto: UserDto): Promise<User> {
-    this.users.push(new User({ id: this.idSequence, ...userDto }));
+    const user = this.instantiateUser(userDto);
+    const checkinToken = new UserCheckinToken(user);
+    user.token = checkinToken;
+    this.users.push(user);
+
     this.idSequence = this.idSequence + 1;
     return this.users.slice(-1)[0];
   }
@@ -35,9 +41,19 @@ export class UserServiceImpl implements UserService {
     });
   }
 
-  public async generateCheckinToken(user: User): Promise<Token> {
+  public async generateCheckinTokens(user: User): Promise<UserCheckinDto> {
+    const { token } = user;
+    const refreshToken = new UserRefreshCheckinToken(user);
     return {
-      accessToken: `id: ${user.id}`,
+      token,
+      refreshToken,
     };
+  }
+
+  private instantiateUser(userDto: UserDto): User {
+    return new User({
+      id: this.idSequence,
+      ...userDto,
+    });
   }
 }
