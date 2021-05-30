@@ -1,6 +1,6 @@
 export class UserFilter {
-  public readonly id?: number;
-  public readonly email?: string;
+  public id?: number;
+  public email?: string;
 
   constructor(attrs: Partial<UserFilter>) {
     Object.assign(this, attrs);

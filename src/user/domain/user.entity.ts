@@ -10,12 +10,12 @@ const defaults = {
 };
 
 export class User {
-  readonly id: number;
-  readonly uuid: string;
-  readonly email: string;
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly role: UserRole;
+  public id: number;
+  public uuid: string;
+  public email: string;
+  public firstName: string;
+  public lastName: string;
+  public role: UserRole;
 
   token: UserCheckinToken;
 
