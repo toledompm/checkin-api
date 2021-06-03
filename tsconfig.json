@@ -11,11 +11,11 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "paths": {
-      "src/*": ["src/*"],
-      "tests/*": ["tests/*"]
+      "src/*": ["./src/*"],
+      "tests/*": ["./tests/*"]
     }
   },
-  "exclude": ["./node_modules", "**/*.spec.ts", "./dist/**/*"]
+  "exclude": ["./node_modules", "./dist/**/*"]
 }

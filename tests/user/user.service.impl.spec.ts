@@ -1,19 +1,9 @@
-import { User } from 'src/user/domain/user.entity';
+import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
+import { User, UserRole } from 'src/user/domain/user.entity';
 import { UserServiceImpl } from 'src/user/user.service.impl';
 
 describe('UserServiceImpl', () => {
   const userServiceImpl = new UserServiceImpl();
-
-  describe('getHello', () => {
-    let res: string;
-    beforeEach(() => {
-      res = userServiceImpl.getHello();
-    });
-
-    it('should return welcome message', () => {
-      expect(res).toEqual('Hello User!');
-    });
-  });
 
   describe('saveUser', () => {
     const userData = {
@@ -22,14 +12,10 @@ describe('UserServiceImpl', () => {
       lastName: 'Marduk',
     };
 
-    const anonUser = {};
-
     let users: User[];
 
     beforeEach(() => {
       userServiceImpl.saveUser(userData);
-      userServiceImpl.saveUser(anonUser);
-
       users = (userServiceImpl as any).users;
     });
 
@@ -37,10 +23,30 @@ describe('UserServiceImpl', () => {
       expect(users).toContainEqual(
         expect.objectContaining({ id: expect.any(Number), ...userData }),
       );
+    });
+  });
 
-      expect(users).toContainEqual(
-        expect.objectContaining({ id: expect.any(Number), firstName: 'anon' }),
-      );
+  describe('generateCheckinToken', () => {
+    let token: UserRefreshCheckinToken;
+
+    const userData = {
+      email: 'jeff.marduk@mail.com',
+      firstName: 'Jeff',
+      lastName: 'Marduk',
+      id: 1,
+      uuid: 'string',
+      role: UserRole.MEMBER,
+    };
+
+    const user = new User(userData);
+
+    const expectedToken = new UserRefreshCheckinToken(user);
+    beforeEach(async () => {
+      token = await userServiceImpl.generateCheckinToken(user);
+    });
+
+    it('should return the correct token', () => {
+      expect(token).toEqual(expectedToken);
     });
   });
 });
