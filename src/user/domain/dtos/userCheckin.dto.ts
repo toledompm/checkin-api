@@ -1,8 +1,7 @@
-import { UserCheckinToken } from 'src/user/domain/tokens/userCheckinToken';
 import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
 
 export class UserCheckinDto {
-  public token: UserCheckinToken;
+  public uuid: string;
   public refreshToken: UserRefreshCheckinToken;
   public timestamp?: Date;
 

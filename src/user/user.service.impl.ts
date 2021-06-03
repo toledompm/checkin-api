@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UserDto } from 'src/user/domain/dtos/user.dto';
-import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
-import { UserCheckinToken } from 'src/user/domain/tokens/userCheckinToken';
 import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
@@ -19,8 +17,6 @@ export class UserServiceImpl implements UserService {
 
   public async saveUser(userDto: UserDto): Promise<User> {
     const user = this.instantiateUser(userDto);
-    const checkinToken = new UserCheckinToken(user);
-    user.token = checkinToken;
     this.users.push(user);
 
     this.idSequence = this.idSequence + 1;
@@ -41,13 +37,10 @@ export class UserServiceImpl implements UserService {
     });
   }
 
-  public async generateCheckinTokens(user: User): Promise<UserCheckinDto> {
-    const { token } = user;
-    const refreshToken = new UserRefreshCheckinToken(user);
-    return {
-      token,
-      refreshToken,
-    };
+  public async generateCheckinToken(
+    user: User,
+  ): Promise<UserRefreshCheckinToken> {
+    return new UserRefreshCheckinToken(user);
   }
 
   private instantiateUser(userDto: UserDto): User {
