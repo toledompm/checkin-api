@@ -10,10 +10,14 @@ help: ## display this help
 
 setup: ## creates .env based on sample file and install dependencies
 	$(MAKE) install
+	$(MAKE) create-database
 	$(info Don't forget to fillout secret envs)
 
 install: ## install node dependencies
 	$(MAKE) run CMD='npm install'
+
+create-database: ## creates database
+	docker-compose exec db su postgres sh -c 'psql -c "CREATE DATABASE checkin"'
 
 start:
 	docker-compose up
@@ -22,5 +26,6 @@ down: ## brings containers down
 	docker-compose down
 
 CMD = bash
+SERVICE = app
 run: ## runs compose app container | CMD = bash
-	docker-compose run --rm app $(CMD)
+	docker-compose run --rm $(SERVICE) $(CMD)

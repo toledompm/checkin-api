@@ -29,8 +29,17 @@ interface AuthConfigs {
   readonly jwt: JwtConfig;
 }
 
+interface DatabaseConfigs {
+  host: string;
+  port: string;
+  username: string;
+  password: string;
+  database: string;
+}
+
 export interface Config {
   readonly auth: AuthConfigs;
+  readonly db: DatabaseConfigs;
 }
 
 export const configValues: Config = {
@@ -49,5 +58,12 @@ export const configValues: Config = {
       signOptions: { expiresIn: '60s' },
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     },
+  },
+  db: {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   },
 };
