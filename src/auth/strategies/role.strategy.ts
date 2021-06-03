@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from 'src/auth/auth.constants';
-import { UserRole } from 'src/user/domain/user.entity';
+import { User, UserRole } from 'src/user/domain/user.entity';
 
 export const Roles = (...roles: UserRole[]) => SetMetadata(ROLES_KEY, roles);
 
@@ -22,7 +22,7 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some((role) => user.roles?.includes(role));
+    const { user }: { user: User } = context.switchToHttp().getRequest();
+    return requiredRoles.some((role) => user.role === role);
   }
 }
