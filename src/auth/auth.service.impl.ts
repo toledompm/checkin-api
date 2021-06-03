@@ -28,7 +28,7 @@ export class AuthServiceImpl implements AuthService {
 
   private async getUser(userAttrs: Partial<User>): Promise<User> {
     const filter = new UserFilter(userAttrs);
-    const user = await this.userService.findUser(filter);
+    const [user] = await this.userService.findUser(filter);
     if (!user) throw new Error('User not found');
     return user;
   }
