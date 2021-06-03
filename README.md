@@ -4,15 +4,21 @@ This API was developed as a part of my graduating paper. All the related documen
 ## Up and running:
 A Makefile has been included to help setup this application. If you want to see the available commands, just type `make help` or `make`.
 
-First install dependencies and create a `.env` file:
+First create and fill out the `.env` file:
+
+``` bash
+cp .env.sample .env
+```
+
+Then install dependencies:
 ``` bash
 make setup
 ```
 *Remember to fill out secret env variables*
 
-Then just run the application!
+Finaly, just run the application!
 ``` bash
-make run
+make start
 ```
 
 ## API Docs:
