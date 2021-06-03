@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { USER_SERVICE } from 'src/user/userConstants';
+import { USER_SERVICE } from 'src/user/user.constants';
 import { UserController } from 'src/user/user.controller';
 import { UserServiceImpl } from 'src/user/user.service.impl';
 

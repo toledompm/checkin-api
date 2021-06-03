@@ -8,7 +8,7 @@ import {
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
 import { UserService } from 'src/user/user.service';
-import { USER_SERVICE } from 'src/user/userConstants';
+import { USER_SERVICE } from 'src/user/user.constants';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {

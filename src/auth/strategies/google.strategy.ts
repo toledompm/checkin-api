@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { GOOGLE_AUTH_STRATEGY } from 'src/auth/authConstants';
+import { GOOGLE_AUTH_STRATEGY } from 'src/auth/auth.constants';
 import { Environment } from 'src/common/environtment';
 
 @Injectable()

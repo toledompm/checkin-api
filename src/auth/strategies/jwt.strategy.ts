@@ -2,7 +2,7 @@ import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable } from '@nestjs/common';
 import { Environment } from 'src/common/environtment';
-import { AUTH_SERVICE, JWT_AUTH_STRATEGY } from 'src/auth/authConstants';
+import { AUTH_SERVICE, JWT_AUTH_STRATEGY } from 'src/auth/auth.constants';
 import { AuthService } from 'src/auth/auth.service';
 import { UserAuthTokenAtributes } from 'src/user/domain/tokens/userAuthToken';
 

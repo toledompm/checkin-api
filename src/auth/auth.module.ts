@@ -6,7 +6,7 @@ import {
   AUTH_SERVICE,
   GOOGLE_AUTH_STRATEGY,
   JWT_AUTH_STRATEGY,
-} from 'src/auth/authConstants';
+} from 'src/auth/auth.constants';
 import { GoogleStrategy } from 'src/auth/strategies/google.strategy';
 import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 import { Environment } from 'src/common/environtment';
