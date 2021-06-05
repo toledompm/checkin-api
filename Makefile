@@ -18,19 +18,6 @@ setup: ## install dependencies and sets up database
 install: ## install node dependencies
 	$(MAKE) run CMD='npm install'
 
-database/create: ## creates database
-	docker-compose up -d db && \
-	docker-compose exec db su postgres sh -c 'psql -c "CREATE DATABASE checkin"'
-	docker-compose rm -s -f db
-
-database/migrate: ## runs tipeorm migrations
-	$(MAKE) run CMD='npm run migration:run'
-
-database/drop: ## drops database
-	docker-compose up -d db && \
-	docker-compose exec db su postgres sh -c 'psql -c "DROP DATABASE checkin"' && \
-	docker-compose rm -s -f db
-
 build: ## builds application
 	$(MAKE) run CMD='npm run build'
 
@@ -39,6 +26,19 @@ start: ## ups all compose services
 
 down: ## downs all compose services
 	docker-compose down
+
+database/create: ## creates database
+	docker-compose up -d db && \
+	docker-compose exec db su postgres sh -c 'psql -c "CREATE DATABASE checkin"'
+	docker-compose rm -s -f db
+
+database/drop: ## drops database
+	docker-compose up -d db && \
+	docker-compose exec db su postgres sh -c 'psql -c "DROP DATABASE checkin"' && \
+	docker-compose rm -s -f db
+
+database/migrate: ## runs tipeorm migrations
+	$(MAKE) run CMD='npm run migration:run'
 
 CMD = bash
 SERVICE = app
