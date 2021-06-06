@@ -17,7 +17,10 @@ export class CheckinServiceImpl implements CheckinService {
     private readonly userService: UserService,
   ) {}
 
-  async checkinUser({ uuid, refreshToken }: UserCheckinDto): Promise<CheckIn> {
+  public async checkinUser({
+    uuid,
+    refreshToken,
+  }: UserCheckinDto): Promise<CheckIn> {
     const user = await this.userService.findUser({ uuid });
     const expectedRefreshToken = await this.userService.generateCheckinToken(
       user,

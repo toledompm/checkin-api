@@ -1,3 +1,4 @@
+import { UserAuthToken } from 'src/user/domain/tokens/userAuthToken';
 import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
 import { User } from 'src/user/domain/user.entity';
 import { UserServiceImpl } from 'src/user/user.service.impl';
@@ -53,11 +54,11 @@ describe('UserServiceImpl', () => {
   });
 
   describe('findUser', () => {
-    let users: User[];
+    let user: User;
     const filters = { email: userData.email };
     repositoryMock.find.mockResolvedValue([instantiatedUser]);
     beforeEach(async () => {
-      users = await userServiceImpl.findUser(filters);
+      user = await userServiceImpl.findUser(filters);
     });
 
     it('should have called userRepository.find', () => {
@@ -65,7 +66,20 @@ describe('UserServiceImpl', () => {
     });
 
     it('should have returned an user', () => {
-      expect(users).toEqual(expect.arrayContaining([instantiatedUser]));
+      expect(user).toEqual(instantiatedUser);
+    });
+  });
+
+  describe('generateAuthToken', () => {
+    let token: UserAuthToken;
+
+    const expectedToken = new UserAuthToken(instantiatedUser);
+    beforeEach(async () => {
+      token = await userServiceImpl.generateAuthToken(instantiatedUser);
+    });
+
+    it('should return the correct token', () => {
+      expect(token).toEqual(expectedToken);
     });
   });
 

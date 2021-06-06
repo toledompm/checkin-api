@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, JWT_AUTH_STRATEGY) {
     });
   }
 
-  async validate(payload: UserAuthTokenAtributes) {
+  public async validate(payload: UserAuthTokenAtributes) {
     return this.authService.getUserFromTokenAttributes(payload);
   }
 }

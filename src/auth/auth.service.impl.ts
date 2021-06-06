@@ -9,27 +9,40 @@ import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
 import { UserService } from 'src/user/user.service';
 import { USER_SERVICE } from 'src/user/user.constants';
+import { assert } from 'src/common/assertions';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {
   constructor(@Inject(USER_SERVICE) private userService: UserService) {}
 
-  async googleLogin(userDto: UserDto): Promise<UserAuthToken> {
+  public async googleLogin(userDto: UserDto): Promise<UserAuthToken> {
     if (!userDto) throw new Error('No user from google');
-    const user = await this.getUser(userDto);
-    return new UserAuthToken(user);
+    const foundUser = await this.getUser(userDto);
+
+    const user = foundUser || (await this.createUser(userDto));
+    return this.userService.generateAuthToken(user);
   }
 
-  async getUserFromTokenAttributes({
+  public async getUserFromTokenAttributes({
     sub,
   }: UserAuthTokenAtributes): Promise<User | undefined> {
     return this.getUser({ id: sub });
   }
 
-  private async getUser(userAttrs: Partial<User>): Promise<User> {
+  private async getUser(userAttrs: Partial<User>): Promise<User | undefined> {
     const filter = new UserFilter(userAttrs);
     const user = await this.userService.findUser(filter);
-    if (!user) throw new Error('User not found');
     return user;
+  }
+
+  private async createUser(userDto: UserDto): Promise<User> {
+    const userIsValid = await this.validateUserDto(userDto);
+    assert(userIsValid, 'User not allowed');
+    return this.userService.saveUser(userDto);
+  }
+
+  private async validateUserDto(_userDto: UserDto): Promise<boolean> {
+    /** check new user attrs against a whitelist */
+    return true;
   }
 }

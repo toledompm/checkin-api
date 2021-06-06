@@ -6,6 +6,7 @@ import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
+import { UserAuthToken } from './domain/tokens/userAuthToken';
 
 @Injectable()
 export class UserServiceImpl implements UserService {
@@ -26,13 +27,17 @@ export class UserServiceImpl implements UserService {
     return await this.usersRepository.findOne(filters);
   }
 
+  public async generateAuthToken(user: User): Promise<UserAuthToken> {
+    return new UserAuthToken(user);
+  }
+
   public async generateCheckinToken(
     user: User,
   ): Promise<UserRefreshCheckinToken> {
     return new UserRefreshCheckinToken(user);
   }
 
-  async refreshCheckinToken(_user: User): Promise<void> {
+  public async refreshCheckinToken(_user: User): Promise<void> {
     /** do nothing, yet */
   }
 }
