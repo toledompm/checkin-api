@@ -10,6 +10,7 @@ import {
 export enum UserRole {
   ADMIN = 'admin',
   MEMBER = 'member',
+  TOTEM = 'totem',
 }
 
 const defaults = {

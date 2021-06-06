@@ -22,13 +22,17 @@ export class UserServiceImpl implements UserService {
     return await this.usersRepository.findOne(id);
   }
 
-  public async findUser(filters: UserFilter): Promise<User[] | undefined> {
-    return await this.usersRepository.find(filters);
+  public async findUser(filters: UserFilter): Promise<User | undefined> {
+    return await this.usersRepository.findOne(filters);
   }
 
   public async generateCheckinToken(
     user: User,
   ): Promise<UserRefreshCheckinToken> {
     return new UserRefreshCheckinToken(user);
+  }
+
+  async refreshCheckinToken(_user: User): Promise<void> {
+    /** do nothing, yet */
   }
 }
