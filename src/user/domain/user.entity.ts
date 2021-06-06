@@ -1,4 +1,11 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
+import { CheckIn } from 'src/checkin/domain/checkin.entity';
+import {
+  Column,
+  Entity,
+  Generated,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -9,7 +16,7 @@ const defaults = {
   role: UserRole.MEMBER,
 };
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   public id: number;
@@ -29,6 +36,9 @@ export class User {
 
   @Column({ name: 'role' })
   public role: UserRole;
+
+  @OneToMany(() => CheckIn, (checkin) => checkin.user)
+  public checkins: CheckIn;
 
   constructor(partial: Partial<User>) {
     Object.assign(this, defaults, partial);
