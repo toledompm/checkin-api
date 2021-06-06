@@ -25,7 +25,6 @@ export class UserServiceImpl implements UserService {
 
   public async findUser(filter: UserFilter): Promise<User | undefined> {
     const compactedFilter = compactObject(filter);
-    console.log(compactedFilter);
     return await this.userRepository.findOne(compactedFilter);
   }
 
