@@ -55,7 +55,7 @@ export const configValues: Config = {
     jwt: {
       secret: process.env.JWT_SECRET,
       ignoreExpiration: false,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: process.env.JWT_EXPIRATION },
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     },
   },

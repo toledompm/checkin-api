@@ -21,8 +21,8 @@ install: ## install node dependencies
 build: ## builds application
 	$(MAKE) run CMD='npm run build'
 
-start: ## ups all compose services
-	docker-compose up
+start: ## ups app compose services
+	docker-compose up app
 
 down: ## downs all compose services
 	docker-compose down
