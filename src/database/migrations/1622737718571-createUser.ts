@@ -15,23 +15,27 @@ export class createUser1622737718571 implements MigrationInterface {
           {
             name: 'uuid',
             type: 'uuid',
-            isGenerated: true,
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'email',
             type: 'varchar',
+            isNullable: false,
           },
           {
             name: 'first_name',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'last_name',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'role',
             type: 'varchar',
+            isNullable: false,
           },
         ],
       }),
