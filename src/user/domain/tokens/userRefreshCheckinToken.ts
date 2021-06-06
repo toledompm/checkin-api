@@ -1,4 +1,3 @@
-import { Token } from 'src/auth/domain/token';
 import { User, UserRole } from 'src/user/domain/user.entity';
 
 export type UserRefreshCheckinTokenAtributes = {
@@ -6,12 +5,13 @@ export type UserRefreshCheckinTokenAtributes = {
   role: UserRole;
 };
 
-export class UserRefreshCheckinToken extends Token<User> {
+export class UserRefreshCheckinToken {
+  public token: string;
   constructor(user: User) {
-    super(user);
+    this.token = this.signToken(user);
   }
 
-  signToken(user: User): string {
+  private signToken(user: User): string {
     return JSON.stringify({ uuid: user.uuid, role: user.role });
   }
 }

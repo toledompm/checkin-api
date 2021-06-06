@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CheckinService } from 'src/checkin/checkin.service';
+import { CheckIn } from 'src/checkin/domain/checkin.entity';
 import { assert } from 'src/common/assertions';
 import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 import { USER_SERVICE } from 'src/user/user.constants';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { CheckIn } from './domain/checkin.entity';
 
 @Injectable()
 export class CheckinServiceImpl implements CheckinService {
@@ -26,7 +26,10 @@ export class CheckinServiceImpl implements CheckinService {
       user,
     );
 
-    assert(expectedRefreshToken === refreshToken, 'Invalid Refresh Token!');
+    assert(
+      expectedRefreshToken.token === refreshToken.token,
+      'Invalid Refresh Token!',
+    );
 
     await this.userService.refreshCheckinToken(user);
     return this.checkinRepository.save({ user });

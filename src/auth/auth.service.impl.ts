@@ -10,23 +10,33 @@ import { UserFilter } from 'src/user/domain/user.filter';
 import { UserService } from 'src/user/user.service';
 import { USER_SERVICE } from 'src/user/user.constants';
 import { assert } from 'src/common/assertions';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {
-  constructor(@Inject(USER_SERVICE) private userService: UserService) {}
+  constructor(
+    @Inject(USER_SERVICE) private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   public async googleLogin(userDto: UserDto): Promise<UserAuthToken> {
     if (!userDto) throw new Error('No user from google');
-    const foundUser = await this.getUser(userDto);
+    const foundUser = await this.getUser({ email: userDto.email });
 
-    const user = foundUser || (await this.createUser(userDto));
-    return this.userService.generateAuthToken(user);
+    const { id, role } = foundUser || (await this.createUser(userDto));
+
+    return this.signUserToken({ sub: id, role });
   }
 
   public async getUserFromTokenAttributes({
     sub,
   }: UserAuthTokenAtributes): Promise<User | undefined> {
-    return this.getUser({ id: sub });
+    return this.userService.getUser(sub);
+  }
+
+  public signUserToken(attributes: UserAuthTokenAtributes): UserAuthToken {
+    const token = this.jwtService.sign(attributes);
+    return new UserAuthToken(token);
   }
 
   private async getUser(userAttrs: Partial<User>): Promise<User | undefined> {
@@ -43,6 +53,6 @@ export class AuthServiceImpl implements AuthService {
 
   private async validateUserDto(_userDto: UserDto): Promise<boolean> {
     /** check new user attrs against a whitelist */
-    return true;
+    return false;
   }
 }

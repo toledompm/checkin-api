@@ -1,4 +1,3 @@
-import { UserAuthToken } from 'src/user/domain/tokens/userAuthToken';
 import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
 import { User } from 'src/user/domain/user.entity';
 import { UserServiceImpl } from 'src/user/user.service.impl';
@@ -67,19 +66,6 @@ describe('UserServiceImpl', () => {
 
     it('should have returned an user', () => {
       expect(user).toEqual(instantiatedUser);
-    });
-  });
-
-  describe('generateAuthToken', () => {
-    let token: UserAuthToken;
-
-    const expectedToken = new UserAuthToken(instantiatedUser);
-    beforeEach(async () => {
-      token = await userServiceImpl.generateAuthToken(instantiatedUser);
-    });
-
-    it('should return the correct token', () => {
-      expect(token).toEqual(expectedToken);
     });
   });
 

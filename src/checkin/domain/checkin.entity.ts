@@ -16,6 +16,6 @@ export class CheckIn {
   @JoinColumn({ name: 'user_id' })
   public user: User;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'timestamp' })
   public timestamp: Date;
 }

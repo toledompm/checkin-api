@@ -23,7 +23,8 @@ export class createCheckinTable1622948362591 implements MigrationInterface {
           },
           {
             name: 'timestamp',
-            type: 'date',
+            type: 'TIMESTAMP WITH TIME ZONE',
+            default: 'CURRENT_TIMESTAMP',
           },
         ],
       }),

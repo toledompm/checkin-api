@@ -29,10 +29,10 @@ export class User {
   @Column({ name: 'email' })
   public email: string;
 
-  @Column({ name: 'first_name' })
+  @Column({ name: 'first_name', nullable: true })
   public firstName: string;
 
-  @Column({ name: 'last_name' })
+  @Column({ name: 'last_name', nullable: true })
   public lastName: string;
 
   @Column({ name: 'role' })
