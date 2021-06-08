@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "ed90a90f-a867-4c4b-89e2-cae526c67a90",
+		"name": "CheckinAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "checkin",
+			"item": [
+				{
+					"name": "Checkin User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJ0b3RlbSIsImlhdCI6MTYyMzAwMTQyMSwiZXhwIjoxNjIzMDAyMDI1fQ.n0pfI5QhQZnYXCjutgvfG3FaeWMrmFA3Wr4nwXoQg0s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uuid\": \"f7dd75ac-de7b-4850-903e-0111f6527640\",\n    \"refreshToken\": {\"token\": \"{\\\"uuid\\\":\\\"f7dd75ac-de7b-4850-903e-0111f6527640\\\",\\\"role\\\":\\\"admin\\\"}\"}\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-endpoint}}/checkin",
+							"host": [
+								"{{api-endpoint}}"
+							],
+							"path": [
+								"checkin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYyMzAwMTM4OSwiZXhwIjoxNjIzMDAxOTkzfQ.fzH_6nzmQxhyUVVldxx_e3lSrudYD3cVZwI1gPvv1Rc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"checkin.api.totem.one@gmail.com\",\n    \"firstName\": \"totem\",\n    \"lastName\": \"one\",\n    \"role\": \"totem\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-endpoint}}/user",
+							"host": [
+								"{{api-endpoint}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get UserCheckinToken",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYyMzAwMTM4OSwiZXhwIjoxNjIzMDAxOTkzfQ.fzH_6nzmQxhyUVVldxx_e3lSrudYD3cVZwI1gPvv1Rc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-endpoint}}/user",
+							"host": [
+								"{{api-endpoint}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "healthcheck",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYyMjk5MjI5OCwiZXhwIjoxNjIyOTkyOTAyfQ.wSG6lDhjXtuJYckLsLggIJymy7Hl1BUXgxS00XN0YAY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-endpoint}}",
+					"host": [
+						"{{api-endpoint}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
