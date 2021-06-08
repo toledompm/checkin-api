@@ -29,7 +29,7 @@ down: ## downs all compose services
 
 database/create: ## creates database
 	docker-compose up -d db && \
-	docker-compose exec db su postgres sh -c 'psql -c "CREATE DATABASE $(DB_NAME)"'
+	docker-compose exec db su postgres sh -c 'psql -c "CREATE DATABASE $(DB_NAME)"' && \
 	docker-compose rm -s -f db
 
 database/drop: ## drops database
