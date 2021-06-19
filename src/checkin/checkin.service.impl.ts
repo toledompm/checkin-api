@@ -20,7 +20,7 @@ export class CheckinServiceImpl implements CheckinService {
   public async checkinUser({
     uuid,
     refreshToken,
-  }: UserCheckinDto): Promise<CheckIn> {
+  }: UserCheckinDto): Promise<void> {
     const user = await this.userService.findUser({ uuid });
     const expectedRefreshToken = await this.userService.generateCheckinToken(
       user,
@@ -32,6 +32,6 @@ export class CheckinServiceImpl implements CheckinService {
     );
 
     await this.userService.refreshCheckinToken(user);
-    return this.checkinRepository.save({ user });
+    await this.checkinRepository.save({ user });
   }
 }
