@@ -22,7 +22,7 @@ describe('UserServiceImpl', () => {
   describe('saveUser', () => {
     let user: User;
     repositoryMock.save.mockResolvedValue(instantiatedUser);
-    beforeEach(async () => {
+    beforeAll(async () => {
       user = await userServiceImpl.saveUser(userData);
     });
 
@@ -39,7 +39,7 @@ describe('UserServiceImpl', () => {
     let user: User;
     const id = 1;
     repositoryMock.findOne.mockResolvedValue({ ...instantiatedUser, id });
-    beforeEach(async () => {
+    beforeAll(async () => {
       user = await userServiceImpl.getUser(id);
     });
 
@@ -55,13 +55,13 @@ describe('UserServiceImpl', () => {
   describe('findUser', () => {
     let user: User;
     const filters = { email: userData.email };
-    repositoryMock.find.mockResolvedValue([instantiatedUser]);
-    beforeEach(async () => {
+    repositoryMock.findOne.mockResolvedValue(instantiatedUser);
+    beforeAll(async () => {
       user = await userServiceImpl.findUser(filters);
     });
 
     it('should have called userRepository.find', () => {
-      expect(repositoryMock.find).toHaveBeenCalledWith(filters);
+      expect(repositoryMock.findOne).toHaveBeenCalledWith(filters);
     });
 
     it('should have returned an user', () => {
@@ -73,7 +73,7 @@ describe('UserServiceImpl', () => {
     let token: UserRefreshCheckinToken;
 
     const expectedToken = new UserRefreshCheckinToken(instantiatedUser);
-    beforeEach(async () => {
+    beforeAll(async () => {
       token = await userServiceImpl.generateCheckinToken(instantiatedUser);
     });
 
