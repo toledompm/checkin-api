@@ -37,9 +37,16 @@ interface DatabaseConfigs {
   database: string;
 }
 
+interface CacheConfig {
+  host: string;
+  port: number;
+  ttl: number;
+}
+
 export interface Config {
   readonly auth: AuthConfigs;
   readonly db: DatabaseConfigs;
+  readonly cache: CacheConfig;
 }
 
 export const configValues: Config = {
@@ -65,5 +72,10 @@ export const configValues: Config = {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+  },
+  cache: {
+    host: process.env.CACHE_HOST,
+    port: parseInt(process.env.CACHE_PORT),
+    ttl: parseInt(process.env.CACHE_TTL),
   },
 };
