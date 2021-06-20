@@ -15,8 +15,8 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthServiceImpl implements AuthService {
   constructor(
-    @Inject(USER_SERVICE) private userService: UserService,
-    private jwtService: JwtService,
+    @Inject(USER_SERVICE) private readonly userService: UserService,
+    @Inject(JwtService) private readonly jwtService: JwtService,
   ) {}
 
   public async googleLogin(userDto: UserDto): Promise<UserAuthToken> {

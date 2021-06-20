@@ -4,7 +4,7 @@ import { CacheRecord, CacheService } from 'src/cache/cache.service';
 
 @Injectable()
 export class CacheServiceImpl implements CacheService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
   async store({ key, value }: CacheRecord): Promise<void> {
     await this.cacheManager.set(key, value);
