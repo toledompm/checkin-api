@@ -1,6 +1,5 @@
 import { CheckinServiceImpl } from 'src/checkin/checkin.service.impl';
 import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
-import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
 import { User } from 'src/user/domain/user.entity';
 
 describe('CheckinServiceImpl', () => {
@@ -10,18 +9,24 @@ describe('CheckinServiceImpl', () => {
     generateCheckinToken: jest.fn(),
     refreshCheckinToken: jest.fn(),
   };
+  const cacheMock = {
+    find: jest.fn(),
+  };
+
   const checkinService = new CheckinServiceImpl(
     checkinRepositoryMock as any,
     userServiceMock as any,
+    cacheMock as any,
   );
 
   const userData = {
     uuid: 'aaa-bbbb-ccc-2',
-    refreshToken: { token: 'BananaApplePineapple' } as UserRefreshCheckinToken,
+    refreshToken: 'aaa-bbbb-ccc-2',
   };
 
   const userCheckinDto = new UserCheckinDto(userData);
   const user = new User(userData);
+  const expectedCacheKey = userCheckinDto.refreshToken;
 
   userServiceMock.findUser.mockResolvedValue(user);
 
@@ -29,22 +34,19 @@ describe('CheckinServiceImpl', () => {
     describe('when the token is invalid', () => {
       beforeAll(async () => {
         jest.clearAllMocks();
-        const expectedError = 'Invalid Refresh Token!';
-        userServiceMock.generateCheckinToken.mockResolvedValue({
-          token: 'SomeRandomToken',
-        });
+        const expectedError = 'Cache Entry not Found!';
+        cacheMock.find.mockRejectedValue(new Error(expectedError));
         await expect(
           checkinService.checkinUser(userCheckinDto),
         ).rejects.toThrow(expectedError);
       });
 
-      it('should have called findUser', () => {
-        const { uuid } = userData;
-        expect(userServiceMock.findUser).toHaveBeenCalledWith({ uuid });
+      it('should have called cache.find', () => {
+        expect(cacheMock.find).toHaveBeenCalledWith(expectedCacheKey);
       });
 
-      it('should have called generateCheckinToken', () => {
-        expect(userServiceMock.generateCheckinToken).toHaveBeenCalledWith(user);
+      it('should not have called findUser', () => {
+        expect(userServiceMock.findUser).not.toHaveBeenCalled();
       });
 
       it('should not have called refreshCheckinToken', () => {
@@ -59,10 +61,15 @@ describe('CheckinServiceImpl', () => {
     describe('when the token is valid', () => {
       beforeAll(async () => {
         jest.clearAllMocks();
-        userServiceMock.generateCheckinToken.mockResolvedValue(
-          userData.refreshToken,
-        );
+        cacheMock.find.mockResolvedValue({
+          key: expectedCacheKey,
+          value: { uuid: userData.uuid },
+        });
         await checkinService.checkinUser(userCheckinDto);
+      });
+
+      it('should have called cache.find', () => {
+        expect(cacheMock.find).toHaveBeenCalledWith(expectedCacheKey);
       });
 
       it('should have called findUser', () => {
@@ -70,12 +77,10 @@ describe('CheckinServiceImpl', () => {
         expect(userServiceMock.findUser).toHaveBeenCalledWith({ uuid });
       });
 
-      it('should have called generateCheckinToken', () => {
-        expect(userServiceMock.generateCheckinToken).toHaveBeenCalledWith(user);
-      });
-
       it('should have called refreshCheckinToken', () => {
-        expect(userServiceMock.refreshCheckinToken).toHaveBeenCalledWith(user);
+        expect(userServiceMock.refreshCheckinToken).toHaveBeenCalledWith(
+          userCheckinDto,
+        );
       });
 
       it('should have called checkinRepository.save', () => {

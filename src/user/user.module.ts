@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheProviderModule } from 'src/cache/cache.module';
 import { User } from 'src/user/domain/user.entity';
 import { USER_SERVICE } from 'src/user/user.constants';
 import { UserController } from 'src/user/user.controller';
@@ -11,7 +12,7 @@ const userProvider = {
 };
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), CacheProviderModule],
   controllers: [UserController],
   providers: [userProvider],
   exports: [userProvider],

@@ -1,4 +1,4 @@
-import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
+import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 import { User } from 'src/user/domain/user.entity';
 import { UserServiceImpl } from 'src/user/user.service.impl';
 
@@ -9,7 +9,15 @@ describe('UserServiceImpl', () => {
     find: jest.fn(),
   };
 
-  const userServiceImpl = new UserServiceImpl(repositoryMock as any);
+  const cacheMock = {
+    store: jest.fn(),
+    delete: jest.fn(),
+  };
+
+  const userServiceImpl = new UserServiceImpl(
+    repositoryMock as any,
+    cacheMock as any,
+  );
 
   const userData = {
     email: 'jeff.marduk@mail.com',
@@ -70,15 +78,37 @@ describe('UserServiceImpl', () => {
   });
 
   describe('generateCheckinToken', () => {
-    let token: UserRefreshCheckinToken;
+    let token: UserCheckinDto;
 
-    const expectedToken = new UserRefreshCheckinToken(instantiatedUser);
+    const expectedToken = expect.stringMatching(
+      /[\w]{8}(-[\w]{4}){3}-[\w]{12}/,
+    );
+
     beforeAll(async () => {
       token = await userServiceImpl.generateCheckinToken(instantiatedUser);
     });
 
+    it('should store the user cache', () => {
+      const { uuid, role } = instantiatedUser;
+      expect(cacheMock.store).toHaveBeenCalledWith({
+        key: expectedToken,
+        value: { uuid, role },
+      });
+    });
+
     it('should return the correct token', () => {
-      expect(token).toEqual(expectedToken);
+      expect(token).toEqual({ refreshToken: expectedToken });
+    });
+  });
+
+  describe('refreshCheckinToken', () => {
+    const token = new UserCheckinDto({ refreshToken: 'aaa-bbb-ccc' });
+    beforeAll(async () => {
+      await userServiceImpl.refreshCheckinToken(token);
+    });
+
+    it('should have called cache.delete with the provided token', () => {
+      expect(cacheMock.delete).toHaveBeenCalledWith(token.refreshToken);
     });
   });
 });

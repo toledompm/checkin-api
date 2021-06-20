@@ -12,7 +12,7 @@ import { JWT_AUTH_STRATEGY } from 'src/auth/auth.constants';
 import { Roles } from 'src/auth/strategies/role.strategy';
 import { assert } from 'src/common/assertions';
 import { UserDto } from 'src/user/domain/dtos/user.dto';
-import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
+import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 import { User, UserRole } from 'src/user/domain/user.entity';
 import { USER_SERVICE } from 'src/user/user.constants';
 import { UserService } from 'src/user/user.service';
@@ -27,7 +27,7 @@ export class UserController {
   @Get()
   public async checkinToken(
     @Req() { user }: { user: User },
-  ): Promise<UserRefreshCheckinToken> {
+  ): Promise<UserCheckinDto> {
     assert(user, 'User not found');
     return this.userService.generateCheckinToken(user);
   }
