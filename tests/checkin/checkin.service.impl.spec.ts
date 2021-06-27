@@ -34,8 +34,8 @@ describe('CheckinServiceImpl', () => {
     describe('when the token is invalid', () => {
       beforeAll(async () => {
         jest.clearAllMocks();
-        const expectedError = 'Cache Entry not Found!';
-        cacheMock.find.mockRejectedValue(new Error(expectedError));
+        const expectedError = 'Invalid refresh token!';
+        cacheMock.find.mockResolvedValue(undefined);
         await expect(
           checkinService.checkinUser(userCheckinDto),
         ).rejects.toThrow(expectedError);

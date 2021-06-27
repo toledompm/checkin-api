@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as assert from 'assert';
 import { CACHE_SERVICE } from 'src/cache/cache.constants';
 import { CacheService } from 'src/cache/cache.service';
 import { CheckinService } from 'src/checkin/checkin.service';
@@ -21,10 +22,12 @@ export class CheckinServiceImpl implements CheckinService {
   ) {}
 
   public async checkinUser(checkinDto: UserCheckinDto): Promise<void> {
+    const cacheRecord = await this.cacheService.find(checkinDto.refreshToken);
+    assert.ok(cacheRecord, 'Invalid refresh token!');
+
     const {
       value: { uuid },
-    } = await this.cacheService.find(checkinDto.refreshToken);
-
+    } = cacheRecord;
     const user = await this.userService.findUser({ uuid });
 
     await this.userService.refreshCheckinToken(checkinDto);
