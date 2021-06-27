@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import * as assert from 'assert';
 import { JWT_AUTH_STRATEGY } from 'src/auth/auth.constants';
 import { Roles } from 'src/auth/strategies/role.strategy';
-import { assert } from 'src/common/assertions';
 import { UserDto } from 'src/user/domain/dtos/user.dto';
 import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 import { User, UserRole } from 'src/user/domain/user.entity';
@@ -28,7 +28,7 @@ export class UserController {
   public async checkinToken(
     @Req() { user }: { user: User },
   ): Promise<UserCheckinDto> {
-    assert(user, 'User not found');
+    assert.ok(user, 'User not found');
     return this.userService.generateCheckinToken(user);
   }
 

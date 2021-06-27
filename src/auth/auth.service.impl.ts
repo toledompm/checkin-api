@@ -1,4 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as assert from 'assert';
 import { AuthService } from 'src/auth/auth.service';
 import { UserDto } from 'src/user/domain/dtos/user.dto';
 import {
@@ -7,10 +9,8 @@ import {
 } from 'src/user/domain/tokens/userAuthToken';
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
-import { UserService } from 'src/user/user.service';
 import { USER_SERVICE } from 'src/user/user.constants';
-import { assert } from 'src/common/assertions';
-import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthServiceImpl implements AuthService {
@@ -47,7 +47,7 @@ export class AuthServiceImpl implements AuthService {
 
   private async createUser(userDto: UserDto): Promise<User> {
     const userIsValid = await this.validateUserDto(userDto);
-    assert(userIsValid, 'User not allowed');
+    assert.ok(userIsValid, 'User not allowed');
     return this.userService.saveUser(userDto);
   }
 
