@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheProviderModule } from 'src/cache/cache.module';
 import { CHECKIN_SERVICE } from 'src/checkin/checkin.constants';
 import { CheckinController } from 'src/checkin/checkin.controller';
 import { CheckinServiceImpl } from 'src/checkin/checkin.service.impl';
@@ -12,7 +13,11 @@ const checkinServiceProvider = {
 };
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forFeature([CheckIn])],
+  imports: [
+    UserModule,
+    CacheProviderModule,
+    TypeOrmModule.forFeature([CheckIn]),
+  ],
   providers: [checkinServiceProvider],
   controllers: [CheckinController],
 })

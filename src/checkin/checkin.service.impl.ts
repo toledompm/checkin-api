@@ -1,8 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as assert from 'assert';
+import { CACHE_SERVICE } from 'src/cache/cache.constants';
+import { CacheService } from 'src/cache/cache.service';
 import { CheckinService } from 'src/checkin/checkin.service';
 import { CheckIn } from 'src/checkin/domain/checkin.entity';
-import { assert } from 'src/common/assertions';
 import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
 import { USER_SERVICE } from 'src/user/user.constants';
 import { UserService } from 'src/user/user.service';
@@ -15,23 +17,20 @@ export class CheckinServiceImpl implements CheckinService {
     private readonly checkinRepository: Repository<CheckIn>,
     @Inject(USER_SERVICE)
     private readonly userService: UserService,
+    @Inject(CACHE_SERVICE)
+    private readonly cacheService: CacheService,
   ) {}
 
-  public async checkinUser({
-    uuid,
-    refreshToken,
-  }: UserCheckinDto): Promise<void> {
+  public async checkinUser(checkinDto: UserCheckinDto): Promise<void> {
+    const cacheRecord = await this.cacheService.find(checkinDto.refreshToken);
+    assert.ok(cacheRecord, 'Invalid refresh token!');
+
+    const {
+      value: { uuid },
+    } = cacheRecord;
     const user = await this.userService.findUser({ uuid });
-    const expectedRefreshToken = await this.userService.generateCheckinToken(
-      user,
-    );
 
-    assert(
-      expectedRefreshToken.token === refreshToken.token,
-      'Invalid Refresh Token!',
-    );
-
-    await this.userService.refreshCheckinToken(user);
+    await this.userService.refreshCheckinToken(checkinDto);
     await this.checkinRepository.save({ user });
   }
 }

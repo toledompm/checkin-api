@@ -1,5 +1,6 @@
 import { UserDto } from 'src/user/domain/dtos/user.dto';
-import { UserRefreshCheckinToken } from 'src/user/domain/tokens/userRefreshCheckinToken';
+import { UserCheckinDto } from 'src/user/domain/dtos/userCheckin.dto';
+
 import { User } from 'src/user/domain/user.entity';
 import { UserFilter } from 'src/user/domain/user.filter';
 
@@ -7,6 +8,6 @@ export interface UserService {
   saveUser(userDto: UserDto): Promise<User>;
   getUser(id: number): Promise<User>;
   findUser(filter: UserFilter): Promise<User | undefined>;
-  generateCheckinToken(user: User): Promise<UserRefreshCheckinToken>;
-  refreshCheckinToken(user: User): Promise<void>;
+  generateCheckinToken(user: User): Promise<UserCheckinDto>;
+  refreshCheckinToken(token: UserCheckinDto): Promise<void>;
 }
