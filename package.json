@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start:dev": "nodemon",
-    "start:prod": "node dist/main",
+    "start:prod": "node src/main.js",
     "lint": "eslint \"{src,tests}/**/*.ts\"",
     "test": "jest",
     "test:cov": "jest --coverage",
