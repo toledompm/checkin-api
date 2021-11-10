@@ -6,7 +6,7 @@ import {
 import { User } from 'src/user/domain/user.entity';
 
 export interface AuthService {
-  googleLogin(user: UserDto): Record<string, any>;
+  googleLogin(user: UserDto): Promise<UserAuthToken>;
   signUserToken(attributes: UserAuthTokenAtributes): UserAuthToken;
   getUserFromTokenAttributes(attributes: UserAuthTokenAtributes): Promise<User>;
 }
