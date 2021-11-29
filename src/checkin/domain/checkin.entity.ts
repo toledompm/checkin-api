@@ -16,6 +16,10 @@ export class CheckIn {
   @JoinColumn({ name: 'user_id' })
   public user: User;
 
+  @ManyToOne(() => User, (totem) => totem.checkinsMade)
+  @JoinColumn({ name: 'totem_id' })
+  public totemId: number;
+
   @CreateDateColumn({ name: 'timestamp' })
   public timestamp: Date;
 }

@@ -41,6 +41,9 @@ export class User {
   @OneToMany(() => CheckIn, (checkin) => checkin.user)
   public checkins: CheckIn;
 
+  @OneToMany(() => CheckIn, (checkin) => checkin.totemId)
+  public checkinsMade: CheckIn;
+
   constructor(partial: Partial<User>) {
     Object.assign(this, defaults, partial);
   }
